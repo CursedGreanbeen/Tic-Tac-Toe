@@ -1,102 +1,60 @@
 import random
 
 def check():
-    line_1 = field[0].count("_")
-    line_2 = field[1].count("_")
-    line_3 = field[2].count("_")
-
-    result = int(line_1) + int(line_2) + int(line_3)
-    if result == 0:
-        return 0
+    res = 0
+    for i in range(3):
+        res += field[i].count("_")
+    return res
 
 def row():
-    x_row1 = list(zip(*field))[0].count("x")
-    o_row1 = list(zip(*field))[0].count("o")
+    for i in range(3):
+        x_row = list(zip(*field))[i].count("x")
+        o_row = list(zip(*field))[i].count("o")
 
-    x_row2 = list(zip(*field))[1].count("x")
-    o_row2 = list(zip(*field))[1].count("o")
+        if x_row == 3:
+            return 1
+        elif o_row == 3:
+            return 2
+        elif x_row == 2:
+            return int('1' + str(i + 1))
 
-    x_row3 = list(zip(*field))[2].count("x")
-    o_row3 = list(zip(*field))[2].count("o")
-
-    if x_row1 == 3:
-        return 1
-    elif o_row1 == 3:
-        return 2
-    elif x_row1 == 2:
-        return 11
-
-    elif x_row2 == 3:
-        return 1
-    elif o_row2 == 3:
-        return 2
-    elif x_row2 == 2:
-        return 12
-
-    elif x_row3 == 3:
-        return 1
-    elif o_row3 == 3:
-        return 2
-    elif x_row3 == 2:
-        return 13
 
 def line():
-    x_line1 = field[0].count("x")
-    o_line1 = field[0].count("o")
+    for i in range(3):
+        x_line = field[i].count("x")
+        o_line = field[i].count("o")
 
-    x_line2 = field[1].count("x")
-    o_line2 = field[1].count("o")
+        if x_line == 3:
+            return 1
+        elif o_line == 3:
+            return 2
+        elif x_line == 2:
+            return int('1' + str(i + 1))
 
-    x_line3 = field[2].count("x")
-    o_line3 = field[2].count("o")
-
-    if x_line1 == 3:
-        return 1
-    elif o_line1 == 3:
-        return 2
-    elif x_line1 == 2:
-        return 11
-
-    elif x_line2 == 3:
-        return 1
-    elif o_line2 == 3:
-        return 2
-    elif x_line2 == 2:
-        return 12
-
-    elif x_line3 == 3:
-        return 1
-    elif o_line3 == 3:
-        return 2
-    elif x_line3 == 2:
-        return 13
 
 def dia():
-    num1 = field[0][0] + field[1][1] + field[2][2]
-    num_1 = num1.replace("_", "")
-    if num1 == "xxx":
-        return 1
-    elif num1 == "ooo":
-        return 2
-    elif num_1 == "xx":
-        return 11
+    dia1, dia2 = '', ''
 
-    num2 = field[2][0] + field[1][1] + field[0][2]
-    num_2 = num2.replace("_", "")
-    if num2 == "xxx":
+    for i in range(3):
+        dia1 += field[i][i]
+        dia2 += field[i][2 - i]
+
+    if dia1.count("x") == 3 or dia2.count("x") == 3:
         return 1
-    elif num2 == "ooo":
+    elif dia1.count("o") == 3 or dia2.count("o") == 3:
         return 2
-    elif num_2 == "xx":
+    elif dia1.count("x") == 2:
+        return 11
+    elif dia2.count("x") == 2:
         return 12
 
-field = []
-for j in range(3):
-    field.append([])
-    for k in range(3):
-        field[j].append("_")
-for j in field:
-    print(j)
+
+field = [['_'] * 3 for _ in range(3)]
+for f in field:
+    print(*f, sep=' ')
+print()
+
+endgame = {1: "victory", 2: "game over"}
 
 while True:
     k = int(input("\nenter k "))
@@ -104,31 +62,20 @@ while True:
     print("\n")
 
     field[j][k] = "x"
-    for j in field:
-        print(j)
-    print('\n')
+    for f in field:
+        print(*f, sep=' ')
+    print()
 
-    print(check())
-
-    if row() == 1:
-        print("victory")
-        break
-    if row() == 2:
-        print("game over")
+    if row() in endgame:
+        print(endgame[row()])
         break
 
-    if line() == 1:
-        print("victory")
-        break
-    if line() == 2:
-        print("game over")
+    if line() in endgame:
+        print(endgame[line()])
         break
 
-    if dia() == 1:
-        print("victory")
-        break
-    if dia() == 2:
-        print("game over")
+    if dia() in endgame:
+        print(endgame[dia()])
         break
 
     if check() == 0:
@@ -141,27 +88,27 @@ while True:
             j = random.randrange(3)
             if field[j][0] == "_":
                 field[j][0] = "o"
-                for j in field:
-                    print(j)
-                print('\n')
+                for f in field:
+                    print(*f, sep=' ')
+                print()
                 break
     elif row() == 12:
         while True:
             j = random.randrange(3)
             if field[j][1] == "_":
                 field[j][1] = "o"
-                for j in field:
-                    print(j)
-                print('\n')
+                for f in field:
+                    print(*f, sep=' ')
+                print()
                 break
     elif row() == 13:
         while True:
             j = random.randrange(3)
             if field[j][2] == "_":
                 field[j][2] = "o"
-                for j in field:
-                    print(j)
-                print('\n')
+                for f in field:
+                    print(*f, sep=' ')
+                print()
                 break
 
     elif line() == 11:
@@ -169,61 +116,42 @@ while True:
             k = random.randrange(3)
             if field[0][k] == "_":
                 field[0][k] = "o"
-                for j in field:
-                    print(j)
-                print('\n')
+                for f in field:
+                    print(*f, sep=' ')
+                print()
                 break
     elif line() == 12:
         while True:
             k = random.randrange(3)
             if field[1][k] == "_":
                 field[1][k] = "o"
-                for j in field:
-                    print(j)
-                print('\n')
+                for f in field:
+                    print(*f, sep=' ')
+                print()
                 break
     elif line() == 13:
         while True:
             k = random.randrange(3)
             if field[2][k] == "_":
                 field[2][k] = "o"
-                for j in field:
-                    print(j)
-                print('\n')
+                for f in field:
+                    print(*f, sep=' ')
+                print()
                 break
 
     elif dia() == 11:
-        if field[0][0] == "_":
-            field[0][0] = "o"
-            for j in field:
-                print(j)
-            print('\n')
-        if field[1][1] == "_":
-            field[1][1] = "o"
-            for j in field:
-                print(j)
-            print('\n')
-        if field[2][2] == "_":
-            field[2][2] = "o"
-            for j in field:
-                print(j)
-            print('\n')
+        num = random.randrange(3)
+        if field[num][num] == "_":
+            field[num][num] = "o"
+            for f in field:
+                print(*f, sep=' ')
+            print()
     elif dia() == 12:
-        if field[2][0] == "_":
-            field[2][0] = "o"
-            for j in field:
-                print(j)
-            print('\n')
-        if field[1][1] == "_":
-            field[1][1] = "o"
-            for j in field:
-                print(j)
-            print('\n')
-        if field[0][2] == "_":
-            field[0][2] = "o"
-            for j in field:
-                print(j)
-            print('\n')
+        if field[2 - num][num] == "_":
+            field[2 - num][num] = "o"
+            for f in field:
+                print(*f, sep=' ')
+            print()
 
     else:
         while True:
@@ -231,32 +159,22 @@ while True:
             k = random.randrange(3)
             if field[j][k] == "_":
                 field[j][k] = "o"
-                for j in field:
-                    print(j)
-                print('\n')
+                for f in field:
+                    print(*f, sep=' ')
+                print()
                 break
 
-    print(check())
 
-    if row() == 1:
-        print("victory")
-        break
-    if row() == 2:
-        print("game over")
+    if row() in endgame:
+        print(endgame[row()])
         break
 
-    if line() == 1:
-        print("victory")
-        break
-    if line() == 2:
-        print("game over")
+    if line() in endgame:
+        print(endgame[line()])
         break
 
-    if dia() == 1:
-        print("victory")
-        break
-    if dia() == 2:
-        print("game over")
+    if dia() in endgame:
+        print(endgame[dia()])
         break
 
     if check() == 0:
